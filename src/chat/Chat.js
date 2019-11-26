@@ -1,20 +1,26 @@
 import React from 'react';
-import {Widget} from 'react-chat-widget';
+import {Widget, addResponseMessage} from 'react-chat-widget';
 import 'react-chat-widget/lib/styles.css';
 
-let ChatEndPoint = require("../chatEndPoint");
 
 
 
 class Chat extends React.Component {
     constructor(props) {
         super(props);
+        this.handleNewMessage = this.handleNewMessage.bind(this);
+        this.props.chatEndPoint.on("message",(message)=>{
+            addResponseMessage(message);
+        })
     }
+
+    handleNewMessage(newMessage){
+        this.props.chatEndPoint.sendMessage(newMessage);
+    }
+
     render() {
         return <div className={"App"}>
-            <Widget/>
-            <Widget/>
-            <Widget/>
+            <Widget handleNewUserMessage={this.handleNewMessage}/>
         </div>
     }
 }

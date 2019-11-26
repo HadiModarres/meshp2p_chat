@@ -21,7 +21,7 @@ class App extends React.Component{
 
     connected(chatEndPoint){
         this.setState((prevState)=>{
-            return {state: "chat", chatEndPoint: {chatEndPoint}};
+            return {state: "chat", chatEndPoint:chatEndPoint};
         })
     }
 
