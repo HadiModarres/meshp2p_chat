@@ -27,16 +27,20 @@ class Search extends React.Component {
 
     render() {
         return <div className="App">
+            <div className={"container"}>
             <div className={"row justify-content-center"}>
             <input onChange={this.searchFieldChanged} className={"col-sm-4 form-control"} type="text"/>
             <button className={"btn btn-primary btn-lg"} onClick={this.searchSubmitted}>Search</button>
             </div>
-            <div>
+            <br/>
+            <br/>
+            <div className={"card-2"}>
             {this.state.searchResults.map((value,index) => {
                 return (
                     <SearchResult connect={this.connect} pointer={null} key={index} name={value.name}/>
                 );
             })}
+            </div>
             </div>
         </div>
     }
@@ -55,11 +59,13 @@ class SearchResult extends React.Component{
 
 
     render() {
-        return <div className="App">
-            <div>{this.props.name}</div>
-            <button className={"btn btn-info"} onClick={()=> {
+        return <div className="row justify-content-center">
+            <div className={"row"}>
+                {this.props.name}
+            <button style={{"margin-left":"auto"}} className={"btn btn-info"} onClick={()=> {
                 this.props.connect(this.props.pointer)
             }}>Connect</button>
+            </div>
         </div>;
     }
 }
