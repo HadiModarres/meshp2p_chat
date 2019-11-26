@@ -22,9 +22,14 @@ class Profile extends React.Component{
 
    render() {
        return <div className="App">
-           <div>Name: </div>
-           <input onChange={this.nameFieldChanged} type="text"/>
-           <button onClick={this.nameSubmitted}>Join</button>
+           <div className={"row justify-content-center"}>
+           <input placeholder={"Enter Your Name"} className={"col-sm-5 form-control"} onChange={this.nameFieldChanged} type="text"/>
+           </div>
+
+           <br/>
+           <div className={"row justify-content-center"}>
+           <button className={"btn btn-default btn-lg"} onClick={this.nameSubmitted}>Join</button>
+           </div>
        </div>
    }
 }

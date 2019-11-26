@@ -27,8 +27,10 @@ class Search extends React.Component {
 
     render() {
         return <div className="App">
-            <input onChange={this.searchFieldChanged} type="text"/>
-            <button onClick={this.searchSubmitted}>Search</button>
+            <div className={"row justify-content-center"}>
+            <input onChange={this.searchFieldChanged} className={"col-sm-4 form-control"} type="text"/>
+            <button className={"btn btn-primary btn-lg"} onClick={this.searchSubmitted}>Search</button>
+            </div>
             <div>
             {this.state.searchResults.map((value,index) => {
                 return (
@@ -36,7 +38,6 @@ class Search extends React.Component {
                 );
             })}
             </div>
-
         </div>
     }
 
@@ -56,7 +57,7 @@ class SearchResult extends React.Component{
     render() {
         return <div className="App">
             <div>{this.props.name}</div>
-            <button onClick={()=> {
+            <button className={"btn btn-info"} onClick={()=> {
                 this.props.connect(this.props.pointer)
             }}>Connect</button>
         </div>;

@@ -11,6 +11,7 @@ class App extends React.Component{
         this.state = {state: "name", chatEndPoint: null};
         this.nameSubmitted = this.nameSubmitted.bind(this);
         this.connected = this.connected.bind(this);
+        this.chatEnded = this.chatEnded.bind(this);
     }
     nameSubmitted(name){
         console.log("App: name submitted " + name);
@@ -25,12 +26,18 @@ class App extends React.Component{
         })
     }
 
+    chatEnded(){
+        this.setState((prevState)=>{
+            return {state: "search"};
+        })
+    }
+
 
   render() {
         return <div>
             { this.state.state==="name" ? <Profile nameSubmitted={this.nameSubmitted}/> : null}
             { this.state.state==="search" ? <Search connected={this.connected}/> : null}
-            { this.state.state==="chat" ? <Chat chatEndPoint={this.state.chatEndPoint}/> : null}
+            { this.state.state==="chat" ? <Chat chatEnded={this.chatEnded} chatEndPoint={this.state.chatEndPoint}/> : null}
         </div>
  };
 

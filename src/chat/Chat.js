@@ -22,7 +22,9 @@ class Chat extends React.Component {
         this.props.chatEndPoint.sendMessage(newMessage);
     }
     quickButtonClicked(){
-        console.info("quick button clkced");
+        console.info("quick button clkced: ");
+        this.props.chatEnded();
+
     }
 
     render() {
