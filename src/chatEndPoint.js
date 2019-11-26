@@ -18,6 +18,7 @@ class ChatEndPoint extends EventEmitter{
 
     messageReceived(message){
         this.emit("message", message);
+
     }
 
 
