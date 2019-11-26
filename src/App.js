@@ -1,26 +1,39 @@
 import React from 'react';
 import logo from './logo.svg';
+import Profile from "./profile/Profile";
+import Search from "./search/Search";
+import Chat from "./chat/Chat";
 import './App.css';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends React.Component{
+    constructor(){
+        super(null);
+        this.state = {state: "name", chatEndPoint: null};
+        this.nameSubmitted = this.nameSubmitted.bind(this);
+        this.connected = this.connected.bind(this);
+    }
+    nameSubmitted(name){
+        console.log("App: name submitted " + name);
+        this.setState((prevState)=>{
+            return {state: "search"};
+        })
+    }
+
+    connected(chatEndPoint){
+        this.setState((prevState)=>{
+            return {state: "chat", chatEndPoint: {chatEndPoint}};
+        })
+    }
+
+
+  render() {
+        return <div>
+            { this.state.state==="name" ? <Profile nameSubmitted={this.nameSubmitted}/> : null}
+            { this.state.state==="search" ? <Search connected={this.connected}/> : null}
+            { this.state.state==="chat" ? <Chat chatEndPoint={this.state.chatEndPoint}/> : null}
+        </div>
+ };
+
 }
 
 export default App;
