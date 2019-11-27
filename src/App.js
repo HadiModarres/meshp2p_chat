@@ -5,19 +5,30 @@ import Search from "./search/Search";
 import Chat from "./chat/Chat";
 import './App.css';
 
+let {Node} = require("meshp2p");
+
 class App extends React.Component{
     constructor(){
         super(null);
-        this.state = {state: "name", chatEndPoint: null};
+        this.state = {node: null,state: "name", chatEndPoint: null};
         this.nameSubmitted = this.nameSubmitted.bind(this);
         this.connected = this.connected.bind(this);
         this.chatEnded = this.chatEnded.bind(this);
+
     }
     nameSubmitted(name){
+
+        this.state.node = new Node(()=>{},{ANALYTICS: false});
+        this.state.node.registerList("list#name", (a, b) => {
+            return 1
+        });
+        this.state.node.setEntries("list#name", [name]);
+        this.state.node.startNode();
+
         console.log("App: name submitted " + name);
-        this.setState((prevState)=>{
+        this.setState((prevState) => {
             return {state: "search"};
-        })
+        });
     }
 
     connected(chatEndPoint){
@@ -36,7 +47,7 @@ class App extends React.Component{
   render() {
         return <div>
             { this.state.state==="name" ? <Profile nameSubmitted={this.nameSubmitted}/> : null}
-            { this.state.state==="search" ? <Search connected={this.connected}/> : null}
+            { this.state.state==="search" ? <Search node={this.state.node} connected={this.connected}/> : null}
             { this.state.state==="chat" ? <Chat chatEnded={this.chatEnded} chatEndPoint={this.state.chatEndPoint}/> : null}
         </div>
  };

@@ -1,4 +1,5 @@
 import React from 'react';
+import Profile from "../profile/Profile";
 let ChatEndPoint = require('../chatEndPoint');
 
 class Search extends React.Component {
@@ -7,10 +8,23 @@ class Search extends React.Component {
         this.searchFieldChanged = this.searchFieldChanged.bind(this);
         this.searchSubmitted = this.searchSubmitted.bind(this);
         this.connect = this.connect.bind(this);
-        this.state = {searchQuery:"", searchResults:[]}
+        this.acceptClicked = this.acceptClicked.bind(this);
+        this.connectionReceived = this.connectionReceived.bind(this);
+
+        this.state = {searchQuery: "", searchResults: []};
+        this.props.node.inboundCb = this.connectionReceived;
 
     }
 
+    connectionReceived(rtcChannel){
+        console.info("connection received");
+        console.info(rtcChannel);
+
+        this.setState((prevState) => {
+            return {channel: rtcChannel, pending: true};
+        });
+
+    }
     searchFieldChanged(ev){
         this.state = {searchQuery: ev.target.value}
     }
@@ -18,11 +32,25 @@ class Search extends React.Component {
         if (this.state.searchQuery === ""){
             window.alert("query can't be empty.")
         }else {
-            this.setState((prevState) => {
-                return {searchResults: [{name: "aaron"}]};
-            });
+            this.props.node.search("list#name",this.state.searchQuery,60,(value)=>{
+                if (value.value) {
+                    this.setState((prevState) => {
+                        return {searchResults: [value]}
+                    });
+
+                }
+            })
+            // this.setState((prevState) => {
+            //     return {searchResults: [{name: "aaron"}]};
+            // });
 
         }
+    }
+
+    acceptClicked(){
+        this.state.channel.send("ok");
+        let endpoint = new ChatEndPoint(this.state.channel);
+        this.props.connected(endpoint);
     }
 
     render() {
@@ -33,11 +61,12 @@ class Search extends React.Component {
             <button className={"btn btn-primary btn-lg"} onClick={this.searchSubmitted}>Search</button>
             </div>
             <br/>
+            { this.state.pending ? <button onClick={this.acceptClicked}>Accept</button> : null}
             <br/>
             <div className={"card-2"}>
             {this.state.searchResults.map((value,index) => {
                 return (
-                    <SearchResult connect={this.connect} pointer={null} key={index} name={value.name}/>
+                    <SearchResult connect={this.connect} pointer={value.value} key={index} name={value.key}/>
                 );
             })}
             </div>
@@ -46,9 +75,17 @@ class Search extends React.Component {
     }
 
     connect(pointer){
-        //todo meshp2p connect
-        let endpoint = new ChatEndPoint();
-        this.props.connected(endpoint);
+        this.props.node.connectToNode(pointer).then((rtcDataChannel)=>{
+            console.info("connected");
+            console.info(rtcDataChannel);
+            rtcDataChannel.onmessage=(msg)=>{
+                if (msg.data === "ok") {
+                    let endpoint = new ChatEndPoint(rtcDataChannel);
+                    this.props.connected(endpoint);
+                }
+            }
+
+        });
     }
 }
 

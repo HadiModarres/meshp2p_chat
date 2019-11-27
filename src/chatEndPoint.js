@@ -4,11 +4,16 @@ class ChatEndPoint extends EventEmitter{
 
     constructor(rtcChannel) {
         super(null);
-        setTimeout(()=>{this.fakeMsg()}, 5000);
+        // setTimeout(()=>{this.fakeMsg()}, 5000);
+        this.channel = rtcChannel;
+        this.channel.onmessage = (msg)=>{
+            this.messageReceived(msg.data);
+        }
     }
 
     sendMessage(message){
-        console.info("(endpoint) sending msg: "+message);
+        // console.info("(endpoint) sending msg: "+message);
+        this.channel.send(message);
     }
 
     fakeMsg(){
