@@ -23,8 +23,10 @@ class App extends React.Component{
         this.state.node.registerList("list#name", (a, b) => {
             return 1
         });
+        this.state.node.name = name;
         this.state.node.setEntries("list#name", [name]);
         this.state.node.startNode();
+
 
         console.log("App: name submitted " + name);
         this.setState((prevState) => {
@@ -67,7 +69,7 @@ class App extends React.Component{
         return <div>
             { this.state.state==="name" ? <Profile nameSubmitted={this.nameSubmitted}/> : null}
             { this.state.state==="search" ? <Search node={this.state.node} connected={this.connected}/> : null}
-            { this.state.state==="chat" ? <Chat chatEnded={this.chatEnded} chatEndPoint={this.state.chatEndPoint}/> : null}
+            { this.state.state==="chat" ? <Chat name={this.state.node.name} chatEnded={this.chatEnded} chatEndPoint={this.state.chatEndPoint}/> : null}
         </div>
  };
 

@@ -2,9 +2,10 @@ const EventEmitter = require("events");
 
 class ChatEndPoint extends EventEmitter{
 
-    constructor(rtcChannel) {
+    constructor(rtcChannel,name) {
         super(null);
         // setTimeout(()=>{this.fakeMsg()}, 5000);
+        this.name = name;
         this.channel = rtcChannel;
         this.channel.onmessage = (msg) => {
             console.info("message received chatendpoint");

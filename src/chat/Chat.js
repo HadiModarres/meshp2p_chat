@@ -46,7 +46,7 @@ class Chat extends React.Component {
         // </div>
         return <Launcher
             agentProfile={{
-                teamName: 'react-chat-window',
+                teamName: this.props.chatEndPoint.name,
                 imageUrl: 'https://a.slack-edge.com/66f9/img/avatars-teams/ava_0001-34.png'
             }}
             onMessageWasSent={this.handleNewMessage}

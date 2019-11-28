@@ -11,7 +11,7 @@ class Search extends React.Component {
         this.acceptClicked = this.acceptClicked.bind(this);
         this.connectionReceived = this.connectionReceived.bind(this);
 
-        this.state = {searchQuery: "", searchResults: []};
+        this.state = {requester: "", searchQuery: "", searchResults: []};
         this.props.node.inboundCb = this.connectionReceived;
 
     }
@@ -19,6 +19,14 @@ class Search extends React.Component {
     connectionReceived(rtcChannel){
         console.info("connection received");
         console.info(rtcChannel);
+        rtcChannel.onmessage = (msg) => {
+            console.info("initial msg received");
+            console.info(msg.data);
+            this.setState((prevState) => {
+                return {requester: msg.data};
+            });
+        };
+
 
         this.setState((prevState) => {
             return {channel: rtcChannel, pending: true};
@@ -48,8 +56,8 @@ class Search extends React.Component {
     }
 
     acceptClicked(){
-        this.state.channel.send("ok");
-        let endpoint = new ChatEndPoint(this.state.channel);
+        this.state.channel.send(JSON.stringify({key: "ok",value: this.props.node.name}));
+        let endpoint = new ChatEndPoint(this.state.channel,this.state.requester);
         this.props.connected(endpoint);
     }
 
@@ -61,7 +69,7 @@ class Search extends React.Component {
             <button className={"btn btn-primary btn-lg"} onClick={this.searchSubmitted}>Search</button>
             </div>
             <br/>
-            { this.state.pending ? <button onClick={this.acceptClicked}>Accept</button> : null}
+            { this.state.pending ? <div><span>{this.state.requester} is trying to open chat</span> <button onClick={this.acceptClicked}>Accept</button></div> : null}
             <br/>
             <div className={"card-2"}>
             {this.state.searchResults.map((value,index) => {
@@ -78,13 +86,14 @@ class Search extends React.Component {
         this.props.node.connectToNode(pointer).then((rtcDataChannel)=>{
             console.info("connected");
             console.info(rtcDataChannel);
+            rtcDataChannel.send(this.props.node.name);
             rtcDataChannel.onmessage=(msg)=>{
-                if (msg.data === "ok") {
-                    let endpoint = new ChatEndPoint(rtcDataChannel);
+                let ms = JSON.parse(msg.data);
+                if (ms.key === "ok") {
+                    let endpoint = new ChatEndPoint(rtcDataChannel,ms.value);
                     this.props.connected(endpoint);
                 }
             }
-
         });
     }
 }
