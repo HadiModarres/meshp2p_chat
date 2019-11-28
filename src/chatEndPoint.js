@@ -6,14 +6,23 @@ class ChatEndPoint extends EventEmitter{
         super(null);
         // setTimeout(()=>{this.fakeMsg()}, 5000);
         this.channel = rtcChannel;
-        this.channel.onmessage = (msg)=>{
-            this.messageReceived(msg.data);
+        this.channel.onmessage = (msg) => {
+            console.info("message received chatendpoint");
+            console.info(msg);
+            msg = JSON.parse(msg.data);
+            msg.author = "them";
+            console.info(msg);
+            this.messageReceived(msg);
+        };
+
+        this.channel.onclose = ()=>{
+            this.emit("closed");
         }
     }
 
     sendMessage(message){
         // console.info("(endpoint) sending msg: "+message);
-        this.channel.send(message);
+        this.channel.send(JSON.stringify(message));
     }
 
     fakeMsg(){
@@ -24,6 +33,9 @@ class ChatEndPoint extends EventEmitter{
     messageReceived(message){
         this.emit("message", message);
 
+    }
+    close(){
+        this.channel.close();
     }
 
 
