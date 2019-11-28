@@ -21,14 +21,20 @@ class Profile extends React.Component{
     }
 
    render() {
-       return <div className="App">
+       return <div className="App center">
+           <div className={"container card-2"}>
+               <h4>Demo P2P Chat</h4>
+               <br/>
+               <br/>
            <div className={"row justify-content-center"}>
-           <input placeholder={"Enter Your Name"} className={"col-sm-5 form-control"} onChange={this.nameFieldChanged} type="text"/>
+
+           <input placeholder={"Name"} className={"col-sm-5 form-control"} onChange={this.nameFieldChanged} type="text"/>
            </div>
 
            <br/>
            <div className={"row justify-content-center"}>
-           <button className={"btn btn-default btn-lg"} onClick={this.nameSubmitted}>Join</button>
+           <button className={"btn btn-primary btn-lg"} onClick={this.nameSubmitted}>Join</button>
+           </div>
            </div>
        </div>
    }

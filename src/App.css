@@ -12,6 +12,10 @@ body{
   width: 60%;
 }
 
+.center{
+  margin-top: 15%;
+}
+
 
 .App-logo {
   height: 40vmin;
@@ -35,7 +39,8 @@ body{
 .card-2 {
   box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
   background-color: white;
-  margin: 15px;
-  min-height: 500px;
+  /*margin: 15px;*/
+    padding: 60px 35px 50px 35px;
+  /*min-height: 500px;*/
 }
 
