@@ -22,7 +22,7 @@ class Profile extends React.Component{
 
    render() {
        return <div className="App center">
-           <div className={"container card-2"}>
+           <div className={"container "}>
                <h4>Demo P2P Chat</h4>
                <br/>
                <br/>
