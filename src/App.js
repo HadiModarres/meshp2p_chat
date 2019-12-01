@@ -21,7 +21,20 @@ class App extends React.Component{
     }
     nameSubmitted(name){
 
-        this.state.node = new Node(()=>{},{ANALYTICS: false});
+        this.state.node = new Node(()=>{},{DEFAULT_SIGNALLING_SERVERS:[
+                {
+                    "socket": {
+                        "server": "http://52.59.77.118:12345"
+                    },
+                    "signallingApiBase": "http://52.59.77.118:12345"
+                },
+                {
+                    "socket": {
+                        "server": "http://52.59.77.118:12346"
+                    },
+                    "signallingApiBase": "http://52.59.77.118:12346"
+                }
+            ],ANALYTICS: false});
         this.state.node.registerList("list#name", (str1, str2) => {
             return stringSimilarity.compareTwoStrings(str1,str2);
         },0.6);
