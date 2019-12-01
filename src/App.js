@@ -6,6 +6,8 @@ import Chat from "./chat/Chat";
 import {Launcher} from 'react-chat-window'
 import './App.css';
 
+let stringSimilarity = require("string-similarity");
+
 let {Node} = require("meshp2p");
 
 class App extends React.Component{
@@ -20,9 +22,9 @@ class App extends React.Component{
     nameSubmitted(name){
 
         this.state.node = new Node(()=>{},{ANALYTICS: false});
-        this.state.node.registerList("list#name", (a, b) => {
-            return 1
-        });
+        this.state.node.registerList("list#name", (str1, str2) => {
+            return stringSimilarity.compareTwoStrings(str1,str2);
+        },0.6);
         this.state.node.name = name;
         this.state.node.setEntries("list#name", [name]);
         this.state.node.startNode();

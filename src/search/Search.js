@@ -34,27 +34,27 @@ class Search extends React.Component {
 
     }
     searchFieldChanged(ev){
-        this.state = {searchQuery: ev.target.value}
+        // this.state = {searchQuery: ev.target.value}
+        let query = ev.target.value;
+        this.setState((prevState) => {
+            return {searchQuery: query}
+        });
     }
+
     searchSubmitted(){
         if (this.state.searchQuery === ""){
             window.alert("query can't be empty.")
         }else {
             this.setState((prevState) => {
-                return {searching: true};
+                return {searching: true, searchResults: []};
             });
             this.props.node.search("list#name",this.state.searchQuery,60,(value)=>{
                 if (value.value) {
                     this.setState((prevState) => {
-                        return {searching: false, searchResults: [value]}
+                        return {searching: false, searchResults: [...prevState.searchResults,value]}
                     });
-
                 }
             })
-            // this.setState((prevState) => {
-            //     return {searchResults: [{name: "aaron"}]};
-            // });
-
         }
     }
 
